@@ -23,10 +23,10 @@ class PostLocation extends Model
 
     public function scopeFilterAddress($query, $filters)
     {
-        $query->where('address', 'LIKE', '%'.$filters->address.'%');
+        $query->where('address', 'LIKE', '%'.$filters->address.'%')
             ->where('city' ,'LIKE' ,"%$filters->city%")
             ->where('state', 'LIKE', "%$filters->state%")
-            ->where('country', 'LIKE', "%$filters->country%");       
+            ->where('country', 'LIKE', "%$filters->country%");
     }
 
     public function post()

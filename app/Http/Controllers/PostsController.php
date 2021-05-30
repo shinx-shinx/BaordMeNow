@@ -12,7 +12,7 @@ use App\Http\Requests\PostsRequest;
 
 class PostsController extends Controller
 {
-   
+
     public function postData($post, $request)
     {
         //file name
@@ -48,7 +48,7 @@ class PostsController extends Controller
         $posts = PostLocation::filterAddress($request)
             ->with('post')
             ->paginate();
-       
+
         return response()->json([$posts, DB::getQueryLog()]);
     }
 
@@ -60,7 +60,7 @@ class PostsController extends Controller
             $this->postData($post, $request);
             $post->save();
 
-            //post the data on location table    
+            //post the data on location table
             $post->location()->create($request->only([
                 'address', 'city', 'country', 'state', 'postal_code',
             ]));
@@ -68,7 +68,7 @@ class PostsController extends Controller
             //images
             $post_image = array();
             foreach($request->images as $image)
-            {   
+            {
                 $post_image[] = $this->postImage($image, $post->id, $request->name);
             }
             DB::commit();
@@ -77,7 +77,7 @@ class PostsController extends Controller
             DB::rollback();
             return $e;
         }
-        
+
         return response()->json([$post, $post_image]);
     }
 
@@ -94,9 +94,9 @@ class PostsController extends Controller
         $this->postData($post, $request);
         $post->save();
 
-        $images = $boardingHouse->images();
-        
-        //post the data on location table    
+        $images = $request->images();
+
+        //post the data on location table
         $post->location()->update($request->only([
             'address', 'city', 'country', 'state', 'postal_code',
         ]));
